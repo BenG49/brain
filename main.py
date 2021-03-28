@@ -54,9 +54,9 @@ def main_display(brain: Brain):
 
 
 cool_brain = Brain(10)
-cool_brain.connect(0, 1, 30)
-cool_brain.connect(1, 2, 30)
-cool_brain.connect(1, 3, 30)
-cool_brain.connect(1, 4, 30)
+cool_brain.connect(0, 1, 1)
+cool_brain.connect(1, 2, 1)
+cool_brain.connect(1, 3, 1)
+cool_brain.connect(1, 4, 1)
 
 main_display(cool_brain)

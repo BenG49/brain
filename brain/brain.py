@@ -21,27 +21,27 @@ class Brain:
         """Adds a Neuron object to the brain."""
         self.neurons.append(Neuron(self, len(self.neurons)))
 
-    def connect(self, id_a: int, id_b: int, weight: int) -> None:
+    def connect(self, id_a: int, id_b: int, weight: float) -> None:
         """Establishes a connection from neuron A to neuron B.
 
         Args:
             id_a (int): The ID of neuron A.
             id_b (int): The ID of neuron B.
-            weight (int): The strength of the connection between the neurons.
+            weight (float): The strength of the connection between the neurons.
         """
         self.neurons[id_a].connect(self.neurons[id_b], weight)
 
     def update(self) -> None:
-        """Updates the states of the neuron network."""
+        """Updates the states of the neurons."""
         for neuron in self.neurons:
             neuron.update()
 
     def update_display(self, screen, font) -> None:
-        """TODO: Fix this docstring.
+        """Updates the states of the neurons and draw all of them to the screen.
 
         Args:
-            screen ([type]): [description]
-            font ([type]): [description]
+            screen (pygame.display): A pygame display.
+            font (pygame.font): A pygame font.
         """
         for neuron in self.neurons:
             if len(self.neurons) < Brain.NEURON_LABEL_THRESHOLD:

@@ -8,8 +8,6 @@ import pygame
 
 class Neuron:
     """Neuron class file."""
-    NEURON_THRESHOLD = 30
-
     def __init__(self, brain, neuron_id: int) -> None:
         """Initiates a Neuron object.
 
@@ -25,12 +23,12 @@ class Neuron:
         self.links = {}
         self.pos = (random.random(), random.random())
 
-    def connect(self, neuron: Neuron, weight: int) -> None:
+    def connect(self, neuron: Neuron, weight: float) -> None:
         """Establishes a connection to another neuron.
 
         Args:
             neuron (Neuron): An object of the Neuron class.
-            weight (int): The strength of the connection.
+            weight (float): The strength of the connection.
         """
         self.links[neuron.neuron_id] = weight
 
@@ -44,22 +42,22 @@ class Neuron:
 
     def fire(self) -> None:
         """Fires a neuron."""
-        self.state = Neuron.NEURON_THRESHOLD
+        self.state = 1
 
     def update(self) -> None:
         """Updates a neuron and its connections' states."""
-        if self.state >= Neuron.NEURON_THRESHOLD:
+        if self.state >= 1:
             for neuron_id, weight in self.links.items():
                 self.brain.neurons[neuron_id].state += weight
 
             self.state = 0
 
     def update_display(self, screen, font) -> None:
-        """TODO: Fix this docstring.
+        """Updates a neuron and its connections' states, draws neuron to screen.
 
         Args:
-            screen ([type]): [description]
-            font ([type]): [description]
+            screen (pygame.display): A pygame display.
+            font (pygame.font): A pygame font.
         """
         width, height = screen.get_size()
         pos = (self.pos[0] * width, self.pos[1] * height)
@@ -67,13 +65,13 @@ class Neuron:
         # neuron circle
         pygame.draw.circle(screen, pygame.Color(255, 255, 255), pos, 1)
 
-        # label (too many neurons)
+        # label
         if font:
             label = font.render(str(self.neuron_id), False, (255, 255, 255))
             screen.blit(label, pos)
 
         # neuron is firing
-        if self.state >= Neuron.NEURON_THRESHOLD:
+        if self.state >= 1:
             pygame.draw.circle(screen, pygame.Color(255, 255, 255), pos, 3)
 
             for neuron_id, weight in self.links.items():
