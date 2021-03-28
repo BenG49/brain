@@ -2,6 +2,8 @@ import pygame
 import random
 
 class Brain:
+    NEURON_LABEL_THRESHOLD = 25
+
     def __init__(self, neurons:list):
         self.neurons = neurons
     
@@ -15,9 +17,9 @@ class Brain:
         for n in self.neurons:
             n.update()
     
-    def updateDisplay(self, screen):
+    def updateDisplay(self, screen, font):
         for n in self.neurons:
-            n.updateDisplay(screen)
+            n.updateDisplay(screen, font if len(self.neurons) < Brain.NEURON_LABEL_THRESHOLD else None)
     
     def toString(self):
         out = ""
@@ -64,10 +66,15 @@ class Neuron:
 
             self.state = 0
     
-    def updateDisplay(self, screen):
+    def updateDisplay(self, screen, font):
         w, h = screen.get_size()
         pos = (self.pos[0]*w, self.pos[1]*h)
+        
+        # neuron circle
         pygame.draw.circle(screen, pygame.Color(255, 255, 255), pos, 1)
+        # label (if not None, meaning too many neurons)
+        label = font.render(str(self.id), False, (255, 255, 255))
+        screen.blit(label, pos)
 
         # neuron is firing
         if self.state >= Neuron.NEURON_THRESHOLD:
@@ -102,6 +109,8 @@ def checkInput(brain):
 
 def mainDisplay(brain):
     pygame.init()
+    pygame.font.init()
+    font = pygame.font.SysFont('Cascadia Code', 12)
 
     size = (400, 400)
     screen = pygame.display.set_mode((size[0], size[1]))
@@ -109,7 +118,7 @@ def mainDisplay(brain):
     try:
         while True:
             checkInput(brain)
-            brain.updateDisplay(screen)
+            brain.updateDisplay(screen, font)
 
             # add fade so you can actually see firing
             background = pygame.Surface(screen.get_size())
@@ -121,8 +130,10 @@ def mainDisplay(brain):
     except KeyboardInterrupt:
         pass
 
-b = Brain.brainInit(3)
-b.makeLink(0, 1, 2)
-b.makeLink(2, 0, 10)
+b = Brain.brainInit(10)
+b.makeLink(0, 1, 30)
+b.makeLink(1, 2, 30)
+b.makeLink(1, 3, 30)
+b.makeLink(1, 4, 30)
 
 mainDisplay(b)
