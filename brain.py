@@ -21,14 +21,6 @@ class Brain:
         for n in self.neurons:
             n.updateDisplay(screen, font if len(self.neurons) < Brain.NEURON_LABEL_THRESHOLD else None)
     
-    def toString(self):
-        out = ""
-        for n in self.neurons:
-            out += n.toString()
-            out += '\n'
-        
-        return out
-    
     @staticmethod
     def brainInit(neuronCount:int):
         b = Brain([])
@@ -73,8 +65,9 @@ class Neuron:
         # neuron circle
         pygame.draw.circle(screen, pygame.Color(255, 255, 255), pos, 1)
         # label (if not None, meaning too many neurons)
-        label = font.render(str(self.id), False, (255, 255, 255))
-        screen.blit(label, pos)
+        if not font == None:
+            label = font.render(str(self.id), False, (255, 255, 255))
+            screen.blit(label, pos)
 
         # neuron is firing
         if self.state >= Neuron.NEURON_THRESHOLD:
@@ -87,9 +80,6 @@ class Neuron:
                 pygame.draw.line(screen, pygame.Color(255, 255, 255), pos, (other.pos[0]*w, other.pos[1]*h))
 
             self.state = 0
-
-    def toString(self):
-        return str(self.id) + " | " + str(self.state) + " | " + str(self.links)
 
 def checkInput(brain):
     events = pygame.event.get()
