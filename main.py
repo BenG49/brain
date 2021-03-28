@@ -53,14 +53,16 @@ def main_display(brain: Brain):
         pass
 
 
-cool_brain = Brain(6, False)
-# clock, output=2
+cool_brain = Brain(5, False)
 cool_brain.connect(0, 1, 1)
-cool_brain.connect(1, 0, 1)
-cool_brain.connect(1, 2, 0.001)
-
-cool_brain.connect(2, 4, 1)
-cool_brain.connect(3, 4, -1)
-cool_brain.connect(4, 5, 1)
+cool_brain.connect(0, 2, 1)
+cool_brain.connect(1, 3, 0.5)
+cool_brain.connect(2, 3, 0.5)
+cool_brain.connect(3, 4)
 
 main_display(cool_brain)
+
+# clock, output=2, fire 0 to start
+# cool_brain.connect(0, 1)
+# cool_brain.connect(1, 0)
+# cool_brain.connect(1, 2, 0.001)

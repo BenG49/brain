@@ -29,7 +29,7 @@ class Brain:
         """Adds a Neuron object to the brain."""
         self.neurons.append(Neuron(self, len(self.neurons), pos))
 
-    def connect(self, id_a: int, id_b: int, weight: float) -> None:
+    def connect(self, id_a: int, id_b: int, weight: float=1) -> None:
         """Establishes a connection from neuron A to neuron B.
 
         Args:
@@ -40,12 +40,12 @@ class Brain:
         self.neurons[id_a].connect(self.neurons[id_b], weight)
 
     def update(self) -> None:
-        """Updates the states of the neurons."""
+        """Updates the charge of the neurons."""
         for neuron in self.neurons:
             neuron.update()
 
     def update_display(self, screen, font) -> None:
-        """Updates the states of the neurons and draw all of them to the screen.
+        """Updates the charge of the neurons and draw all of them to the screen.
 
         Args:
             screen (pygame.display): A pygame display.

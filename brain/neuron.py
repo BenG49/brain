@@ -20,7 +20,7 @@ class Neuron:
         self.brain = brain
         self.neuron_id = neuron_id
 
-        self.state = 0
+        self.charge = 0
         self.links = {}
         self.pos = pos if pos else (random.random(), random.random())
 
@@ -43,20 +43,18 @@ class Neuron:
 
     def fire(self) -> None:
         """Fires a neuron."""
-        self.state = 1
+        self.charge = 1
 
     def update(self) -> None:
-        """Updates a neuron and its connections' states."""
-        if self.state >= 1:
+        """Updates a neuron and its connections' charges."""
+        if self.charge >= 1:
             for neuron_id, weight in self.links.items():
-                self.brain.neurons[neuron_id].state += weight
+                self.brain.neurons[neuron_id].charge += weight
 
-            self.state = 0
-        elif self.state < -1:
-            self.state = -1
+        self.charge = 0
 
     def update_display(self, screen, font) -> None:
-        """Updates a neuron and its connections' states, draws neuron to screen.
+        """Updates a neuron and its connections' charges, draws neuron to screen.
 
         Args:
             screen (pygame.display): A pygame display.
@@ -74,12 +72,12 @@ class Neuron:
             screen.blit(label, pos)
 
         # neuron is firing
-        if self.state >= 1:
+        if self.charge >= 1:
             pygame.draw.circle(screen, pygame.Color(255, 255, 255), pos, 3)
 
             for neuron_id, weight in self.links.items():
                 neuron = self.brain.neurons[neuron_id]
-                neuron.state += weight
+                neuron.charge += weight
 
                 pygame.draw.line(screen, pygame.Color(
                     255, 255, 255),
@@ -87,6 +85,4 @@ class Neuron:
                     (neuron.pos[0] * width, neuron.pos[1] * height)
                 )
 
-            self.state = 0
-        elif self.state < -1:
-            self.state = -1
+        self.charge = 0
