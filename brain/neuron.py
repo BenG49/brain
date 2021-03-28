@@ -8,20 +8,21 @@ import pygame
 
 class Neuron:
     """Neuron class file."""
-    def __init__(self, brain, neuron_id: int) -> None:
+    def __init__(self, brain, neuron_id: int, pos: tuple=None) -> None:
         """Initiates a Neuron object.
 
         Args:
             brain (Brain): A Brain object of the brain that the neuron belongs
             to.
             neuron_id (int): The ID of the neuron in the brain.
+            pos (tuple): A tuple representing a screen position from 0 to 1.
         """
         self.brain = brain
         self.neuron_id = neuron_id
 
         self.state = 0
         self.links = {}
-        self.pos = (random.random(), random.random())
+        self.pos = (random.random(), random.random()) if None else pos
 
     def connect(self, neuron: Neuron, weight: float) -> None:
         """Establishes a connection to another neuron.
@@ -51,6 +52,8 @@ class Neuron:
                 self.brain.neurons[neuron_id].state += weight
 
             self.state = 0
+        elif self.state < -1:
+            self.state = -1
 
     def update_display(self, screen, font) -> None:
         """Updates a neuron and its connections' states, draws neuron to screen.
@@ -85,3 +88,5 @@ class Neuron:
                 )
 
             self.state = 0
+        elif self.state < -1:
+            self.state = -1
