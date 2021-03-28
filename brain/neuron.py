@@ -22,7 +22,7 @@ class Neuron:
 
         self.state = 0
         self.links = {}
-        self.pos = (random.random(), random.random()) if None else pos
+        self.pos = pos if pos else (random.random(), random.random())
 
     def connect(self, neuron: Neuron, weight: float) -> None:
         """Establishes a connection to another neuron.
