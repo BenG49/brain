@@ -41,7 +41,7 @@ def main_display(brain: Brain, sleep_time: int=0):
     screen = pygame.display.set_mode((size[0], size[1]))
 
     # desmos is pog
-    alpha = math.log(100*sleep_time+1)*40+1
+    alpha = min(math.log(100*sleep_time+1)*40+1, 150)
 
     try:
         while True:
@@ -61,40 +61,25 @@ def main_display(brain: Brain, sleep_time: int=0):
     except KeyboardInterrupt:
         pass
 
-num = (100, 3)
-cool_brain = Brain(False, num[0], num[1])
+count = 6
+cool_brain = Brain(False, count, 2)
 
-CLK_START = 0
-CLK = 10
+IN = 0
 
-IN = 1
+ACLK_0 = 1
+ACLK_1 = 2
+BCLK_0 = 3
+BCLK_1 = 4
+BCLK_2 = 5
 
-OUT_1 = num[0]
-OUT_2 = num[0]+1
-OUT_3 = num[0]+2
+cool_brain.connect(IN, ACLK_0)
+cool_brain.connect(IN, BCLK_0)
 
-DELAY_START = 11
-DELAY_END = 80
+cool_brain.connect(ACLK_0, ACLK_1)
+cool_brain.connect(ACLK_1, ACLK_0)
 
-INTERMEDIATE = DELAY_END+1
+cool_brain.connect(BCLK_0, BCLK_1)
+cool_brain.connect(BCLK_1, BCLK_2)
+cool_brain.connect(BCLK_2, BCLK_0)
 
-cool_brain.connect(CLK_START, CLK)
-cool_brain.connect(CLK, CLK_START)
-
-cool_brain.connect(IN, OUT_1)
-
-# delay
-for i in range(DELAY_START, DELAY_END):
-    cool_brain.connect(i, i+1)
-
-cool_brain.connect(OUT_1, DELAY_START)
-cool_brain.connect(OUT_1, OUT_3, -1) # inhibit output 3
-
-cool_brain.connect(OUT_2, INTERMEDIATE)
-cool_brain.connect(INTERMEDIATE, OUT_2, -1) # inhibit output 2
-cool_brain.connect(INTERMEDIATE, DELAY_START)
-
-cool_brain.connect(DELAY_END, OUT_2)
-cool_brain.connect(DELAY_END, OUT_3)
-
-main_display(cool_brain, 0.01)
+main_display(cool_brain, 1)

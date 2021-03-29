@@ -17,6 +17,7 @@ class Brain:
             random_pos (bool): To randomize the positions of the neurons.
         """
         self.neurons = []
+        self.neuron_count = neuron_count
 
         # add all neurons
         DISPLAY_BUFFER = 0.1
@@ -50,11 +51,6 @@ class Brain:
         """
         self.neurons[id_a].connect(self.neurons[id_b], weight)
 
-    def update(self) -> None:
-        """Updates the charge of the neurons."""
-        for neuron in self.neurons:
-            neuron.update()
-
     def update_display(self, screen, font) -> None:
         """Updates the charge of the neurons and draw all of them to the screen.
 
@@ -63,4 +59,7 @@ class Brain:
             font (pygame.font): A pygame font.
         """
         for neuron in self.neurons:
-            neuron.update_display(screen, font if len(self.neurons) < Brain.NEURON_LABEL_THRESHOLD else None)
+            neuron.update_display(screen, font if self.neuron_count <= Brain.NEURON_LABEL_THRESHOLD else None)
+        
+        for neuron in self.neurons: # this is probably pretty unoptimized
+            neuron.update_charges()

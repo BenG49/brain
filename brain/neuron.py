@@ -20,6 +20,7 @@ class Neuron:
         self.brain = brain
         self.neuron_id = neuron_id
 
+        self.weightDelta = 0
         self.charge = 0
         self.links = {}
         self.pos = pos if pos else (random.random(), random.random())
@@ -45,15 +46,6 @@ class Neuron:
         """Fires a neuron."""
         self.charge = 1
 
-    def update(self) -> None:
-        """Updates a neuron and its connections' charges."""
-        if self.charge >= 1:
-            for neuron_id, weight in self.links.items():
-                self.brain.neurons[neuron_id].charge += weight
-
-        if self.charge > 0:
-            self.charge = 0
-
     def update_display(self, screen, font) -> None:
         """Updates a neuron and its connections' charges, draws neuron to screen.
 
@@ -74,11 +66,13 @@ class Neuron:
 
         # neuron is firing
         if self.charge >= 1:
+            print(self.neuron_id)
             pygame.draw.circle(screen, "white", pos, 3)
 
             for neuron_id, weight in self.links.items():
                 neuron = self.brain.neurons[neuron_id]
-                neuron.charge += weight
+                print("- "+str(neuron.neuron_id))
+                neuron.weightDelta += weight
 
                 # draw line to other neuron
                 if type(neuron) != OutputNeuron:
@@ -93,6 +87,10 @@ class Neuron:
         # only reset to resting state if not inhibitive
         if self.charge > 0:
             self.charge = 0
+    
+    def update_charges(self):
+        self.charge += self.weightDelta
+        self.weightDelta = 0
 
 class OutputNeuron(Neuron):
     def __init__(self, brain, neuron_id: int, output_id: int):
