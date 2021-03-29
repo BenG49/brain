@@ -53,12 +53,12 @@ def main_display(brain: Brain):
         pass
 
 
-cool_brain = Brain(5, False)
-cool_brain.connect(0, 1, 1)
-cool_brain.connect(0, 2, 1)
-cool_brain.connect(1, 3, 0.5)
-cool_brain.connect(2, 3, 0.5)
-cool_brain.connect(3, 4)
+cool_brain = Brain(False, 3, 1)
+cool_brain.connect(0, 1)
+cool_brain.connect(1, 2)
+cool_brain.connect(2, 3)
+
+cool_brain.connect(0, 2, -1)
 
 main_display(cool_brain)
 

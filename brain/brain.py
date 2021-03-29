@@ -1,5 +1,5 @@
 """Brain class file."""
-from brain.neuron import Neuron
+from brain.neuron import Neuron, OutputNeuron
 
 import math
 
@@ -8,7 +8,7 @@ class Brain:
     """Brain class file."""
     NEURON_LABEL_THRESHOLD = 25
 
-    def __init__(self, neuron_count: int, random_pos: bool) -> None:
+    def __init__(self, random_pos: bool, neuron_count: int, output_count: int=0) -> None:
         """Initiates a Brain object.
 
         Args:
@@ -18,20 +18,27 @@ class Brain:
         """
         self.neurons = []
 
-        BUFFER = 0.1
-
+        # add all neurons
+        DISPLAY_BUFFER = 0.1
         square_side = math.ceil(math.sqrt(neuron_count))
-        divisor = (square_side-1+BUFFER*2)
+        divisor = square_side-1+DISPLAY_BUFFER*2
         for i in range(neuron_count):
-            pos = None if random_pos else (
-                int(i/square_side)/divisor+BUFFER/divisor,
-                i%square_side/divisor+BUFFER/divisor
-            )
-            self.add_neuron(pos)
+            self.add_neuron(None if random_pos else (
+                int(i/square_side)/divisor+DISPLAY_BUFFER/divisor,
+                i%square_side/divisor+DISPLAY_BUFFER/divisor
+            ))
+
+        # add all output neurons
+        for i in range(output_count):
+            self.add_output_neuron(i)
 
     def add_neuron(self, pos: tuple) -> None:
         """Adds a Neuron object to the brain."""
         self.neurons.append(Neuron(self, len(self.neurons), pos))
+    
+    def add_output_neuron(self, id: int) -> None:
+        """Adds an OutputNeuron object to the brain."""
+        self.neurons.append(OutputNeuron(self, len(self.neurons), id))
 
     def connect(self, id_a: int, id_b: int, weight: float=1) -> None:
         """Establishes a connection from neuron A to neuron B.
