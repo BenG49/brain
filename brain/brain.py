@@ -17,11 +17,15 @@ class Brain:
             random_pos (bool): To randomize the positions of the neurons.
         """
         self.neurons = []
+
+        BUFFER = 0.1
+
         square_side = math.ceil(math.sqrt(neuron_count))
+        divisor = (square_side-1+BUFFER*2)
         for i in range(neuron_count):
             pos = None if random_pos else (
-                int(i/square_side)/square_side,
-                i%square_side/square_side
+                int(i/square_side)/divisor+BUFFER/divisor,
+                i%square_side/divisor+BUFFER/divisor
             )
             self.add_neuron(pos)
 

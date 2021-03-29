@@ -51,7 +51,8 @@ class Neuron:
             for neuron_id, weight in self.links.items():
                 self.brain.neurons[neuron_id].charge += weight
 
-        self.charge = 0
+        if self.charge > 0:
+            self.charge = 0
 
     def update_display(self, screen, font) -> None:
         """Updates a neuron and its connections' charges, draws neuron to screen.
@@ -85,4 +86,5 @@ class Neuron:
                     (neuron.pos[0] * width, neuron.pos[1] * height)
                 )
 
-        self.charge = 0
+        if self.charge > 0:
+            self.charge = 0
