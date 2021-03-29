@@ -80,9 +80,12 @@ class Neuron:
                 neuron = self.brain.neurons[neuron_id]
                 neuron.charge += weight
 
+                # draw line to other neuron
                 if type(neuron) != OutputNeuron:
+                    # color line orange if weight is negative
+                    color = "white" if weight >= 0 else "orange"
                     pygame.draw.line(screen,
-                        "white",
+                        color,
                         pos,
                         (neuron.pos[0] * width, neuron.pos[1] * height)
                     )
@@ -119,7 +122,6 @@ class OutputNeuron(Neuron):
 
             for neuron_id, weight in self.links.items():
                 self.brain.neurons[neuron_id].charge += weight
-
 
         # only reset to resting state if not inhibitive
         if self.charge > 0:

@@ -63,5 +63,4 @@ class Brain:
             font (pygame.font): A pygame font.
         """
         for neuron in self.neurons:
-            if len(self.neurons) < Brain.NEURON_LABEL_THRESHOLD:
-                neuron.update_display(screen, font)
+            neuron.update_display(screen, font if len(self.neurons) < Brain.NEURON_LABEL_THRESHOLD else None)
